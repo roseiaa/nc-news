@@ -10,7 +10,7 @@
     }
   },
   "GET /api/articles/article_id": {
-    "description": "serves an array of all articles",
+    "description": "serves an article object with the correct id",
     "queries": [],
     "params": ["article_id"],
     "exampleResponse": {
