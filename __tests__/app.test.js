@@ -7,6 +7,7 @@ const data = require("../db/data/test-data");
 /* Set up your test imports here */
 
 const topicData = require("../db/data/test-data/topics");
+const articleData = require("../db/data/test-data/articles")
 
 beforeEach(() => {
   return seed(data);
@@ -47,3 +48,42 @@ describe("GET /api/topics", () => {
       });
   });
 });
+
+describe("GET /api/articles/:article_id", () => {
+  test("200: Responds with an article object with the correct keys", () => {
+    return request(app)
+    .get("/api/articles/1")
+    .expect(200)
+    .then(({body: {article}}) => {
+      expect(article).toMatchObject([{
+        article_id: 1,
+        title: 'Living in the shadow of a great man',
+        topic: 'mitch',
+        author: 'butter_bridge',
+        body: 'I find this existence challenging',
+        created_at: "2020-07-09T20:11:00.000Z",
+        votes: 100,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+      }])
+    })
+  })
+
+  test("400: Responds with a 400 error if passed an invalid id", () => {
+    return request(app)
+    .get("/api/articles/hello")
+    .expect(400)
+    .then(({body: {message}}) => {
+      expect(message).toBe("Invalid Id")
+    })
+  })
+
+  test("404: responds with a 404 error if passed a valid Id that does not exist in the database", () => {
+    return request(app)
+    .get("/api/articles/1000")
+    .expect(404)
+    .then(({body: {message}}) => {
+      expect(message).toBe("Invalid input")
+    })
+  })
+
+})
