@@ -1,5 +1,5 @@
 const endpoints = require("./endpoints.json")
-const {getTopicData, getArticleIdData} = require("./models/app.models")
+const {getTopicData, getArticleIdData, getArticleData} = require("./models/app.models")
 
 function getApi(req, res) {
     res.status(200).send({endpoints})   
@@ -22,6 +22,16 @@ function getArticleId(req, res, next) {
     })
 
 }
+
+function getArticles(req, res, next) {
+    getArticleData().then((articles) => {
+        res.status(200).send({articles})
+    })
+    .catch((err) => {
+        next(err)
+    })
+}
+
 
 function psqlErrorHandler(err, req, res, next) {
     if(err.code === "22P02"){
@@ -48,4 +58,4 @@ function serverErrorHandler(err, req, res, next)  {
 
 
 
-module.exports = {getApi, getTopics, getArticleId, serverErrorHandler, psqlErrorHandler, customErrorHandler}
+module.exports = {getApi, getTopics, getArticleId,getArticles, serverErrorHandler, psqlErrorHandler, customErrorHandler}
