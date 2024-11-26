@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
-const {getApi, getTopics, getArticleId, psqlErrorHandler, serverErrorHandler, customErrorHandler} = require("./app.controller");
+const {getApi, getTopics, getArticleId, psqlErrorHandler, serverErrorHandler, customErrorHandler, getArticles} = require("./app.controller");
 
 
 app.get("/api", getApi)
@@ -9,6 +9,8 @@ app.get("/api", getApi)
 app.get("/api/topics", getTopics)
 
 app.get("/api/articles/:article_id", getArticleId)
+
+app.get("/api/articles", getArticles)
 
 app.all("/*", (req, res) => {
     res.status(404).send({message: `Route not found`})

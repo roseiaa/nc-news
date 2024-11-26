@@ -18,7 +18,16 @@ function getArticleIdData(id) {
         }
         return rows
     })
-    
 }
 
-module.exports = {getTopicData, getArticleIdData}
+function getArticleData() {
+    return db.query(`SELECT articles.*, (SELECT COUNT(*) FROM comments WHERE comments.article_id = articles.article_id) AS comment_count FROM articles`).then(({rows}) => {
+        rows.forEach((article) => {
+            article.comment_count = Number(article.comment_count)
+            delete article.body
+        })
+        return rows
+    })
+}
+
+module.exports = {getTopicData, getArticleIdData, getArticleData}
