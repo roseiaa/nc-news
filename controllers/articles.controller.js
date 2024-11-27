@@ -1,5 +1,5 @@
 const endpoints = require("../endpoints.json")
-const {getArticleData, getArticleIdData} = require("../models/articles.models")
+const {getArticleData, getArticleIdData, updateArticle} = require("../models/articles.models")
 
 function getArticleId(req, res, next) {
     const {article_id} = req.params
@@ -21,4 +21,15 @@ function getArticles(req, res, next) {
     })
 }
 
-module.exports = {getArticles, getArticleId}
+function patchArticle(req, res, next) {
+    const newVote = req.body.inc_votes
+    const {article_id} = req.params
+    updateArticle(newVote, article_id).then((article) => {
+        res.status(200).send({article})
+    })
+    .catch((err) => {
+        next(err)
+    })
+}
+
+module.exports = {getArticles, getArticleId, patchArticle}

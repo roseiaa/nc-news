@@ -81,5 +81,24 @@
       ]
     }
     
+  },
+
+  "PATCH /api/articles/:article_id": {
+    "description": "updates the vote property of an article object",
+    "queries": ["update", "votes", "article_id", "articles"],
+    "exampleResponse": {
+    "article": [
+        {
+          "article_id": 1,
+          "title": "Seafood substitutions are increasing",
+          "topic": "cooking",
+          "author": "weegembump",
+          "created_at": "2018-05-30T15:59:13.341Z",
+          "votes": 100,
+          "article_img_url": "https://images.pexels.com/photos/97050/pexels-photo-97050.jpeg?w=700&h=700"
+        }
+      ]
+    }
+    
   }
 }
