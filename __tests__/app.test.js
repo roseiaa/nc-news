@@ -144,3 +144,53 @@ describe("GET /api/articles/:article_id/comments", () =>  {
     })
   })
 })
+
+
+describe.only("POST /api/articles/:article_id/comments", () =>  {
+  test("201: Responds with a newly posted comment object", () => {
+    const data = {
+      username: "butter_bridge",
+      body: "I am so cool."
+
+    }
+    return request(app)
+    .post("/api/articles/1/comments")
+    .send(data)
+    .expect(201)
+    .then(({body: {comment}}) => {
+        expect(comment[0]).toMatchObject({
+          comment_id: expect.any(Number),
+          article_id: 1,
+          votes: 0,
+          author:"butter_bridge",
+          body: "I am so cool.",
+          created_at: expect.any(String)
+        })
+      })
+    })
+
+    test("400: Responds with a 400 error if incorrect body is passed", () => {
+      const data = {}
+      return request(app)
+      .post("/api/articles/1/comments")
+      .send(data)
+      .expect(400)
+      .then(({body: {message}}) => {
+        expect(message).toBe("Invalid Request")
+      })
+      })
+
+      test("400: Responds with a 400 error if body is passed with incorrect data types", () => {
+        const data = {
+          username: 1,
+          body: true
+        }
+        return request(app)
+        .post("/api/articles/1/comments")
+        .send(data)
+        .expect(400)
+        .then(({body: {message}}) => {
+          expect(message).toBe("invalid data types inputted in body")
+        })
+        })
+  })
