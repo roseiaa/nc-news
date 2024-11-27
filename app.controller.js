@@ -1,5 +1,5 @@
 const endpoints = require("./endpoints.json")
-const {getTopicData, getArticleIdData, getArticleData} = require("./models/app.models")
+const {getTopicData, getArticleIdData, getArticleData, getArticleCommentData} = require("./models/app.models")
 
 function getApi(req, res) {
     res.status(200).send({endpoints})   
@@ -32,7 +32,15 @@ function getArticles(req, res, next) {
     })
 }
 
+function getArticleComments(req, res, next) {
+    const {article_id} = req.params
+    getArticleCommentData(article_id).then((comments) => {
+        res.status(200).send({comments})
+    })
+}
 
+
+// Error Handling 
 function psqlErrorHandler(err, req, res, next) {
     if(err.code === "22P02"){
         res.status(400).send({message: 'Invalid Id'})
@@ -58,4 +66,4 @@ function serverErrorHandler(err, req, res, next)  {
 
 
 
-module.exports = {getApi, getTopics, getArticleId,getArticles, serverErrorHandler, psqlErrorHandler, customErrorHandler}
+module.exports = {getApi, getTopics, getArticleId, getArticles, getArticleComments, serverErrorHandler, psqlErrorHandler, customErrorHandler}

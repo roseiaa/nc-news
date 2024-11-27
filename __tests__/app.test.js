@@ -7,7 +7,8 @@ const data = require("../db/data/test-data");
 /* Set up your test imports here */
 
 const topicData = require("../db/data/test-data/topics");
-const articleData = require("../db/data/test-data/articles")
+const articleData = require("../db/data/test-data/articles");
+const { captureRejectionSymbol } = require("supertest/lib/test");
 
 beforeEach(() => {
   return seed(data);
@@ -117,6 +118,27 @@ describe("GET: /api/articles", () => {
     .then(({body: {articles}}) => {
       articles.forEach((article) => {
         expect(article).not.toHaveProperty("body")
+      })
+    })
+  })
+})
+
+describe("GET /api/articles/:article_id/comments", () =>  {
+  test("200: Responds with an array of comment objects associated with the article_id", () => {
+    return request(app)
+    .get("/api/articles/1/comments")
+    .expect(200)
+    .then(({body: {comments}}) => {
+      expect(comments).toHaveLength(11)
+      comments.forEach((comment) => {
+        expect(comment).toMatchObject({
+          comment_id: expect.any(Number),
+          article_id: 1,
+          votes: expect.any(Number),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.any(String)
+        })
       })
     })
   })
