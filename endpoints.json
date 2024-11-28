@@ -100,5 +100,14 @@
       ]
     }
     
+  },
+
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes comment by comment_id",
+    "queries": ["delete", "comment", "id"],
+    "exampleResponse": "NO RESPONSE AS 204 SENDS BACK NO BODY"
   }
+
+
+
 }

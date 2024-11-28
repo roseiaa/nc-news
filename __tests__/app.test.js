@@ -256,3 +256,30 @@ describe("POST /api/articles/:article_id/comments", () =>  {
     })
   
   })
+
+
+
+  describe("DELETE /api/comments/:comment_id", () => {
+    test("204: Deletes the specificed comment and responds with no body", () => {
+      return request(app)
+      .delete("/api/comments/1")
+      .expect(204)
+    })
+
+    test("404: Responds with an error message if passed a comment that does not exist", () => {
+      return request(app)
+      .delete("/api/comments/1000")
+      .expect(404)
+      .then(({body: {message}}) => {
+        expect(message).toBe("Comment does not exist.")
+      })
+    })
+    test("400: Responds with an error message if passed an id that is not a number", () => {
+      return request(app)
+      .delete("/api/comments/Hello")
+      .expect(400)
+      .then(({body: {message}}) => {
+        expect(message).toBe("Invalid Id")
+      })
+    })
+  })
