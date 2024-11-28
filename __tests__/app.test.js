@@ -8,7 +8,7 @@ const data = require("../db/data/test-data");
 
 const topicData = require("../db/data/test-data/topics");
 const articleData = require("../db/data/test-data/articles");
-const { captureRejectionSymbol } = require("supertest/lib/test");
+
 
 beforeEach(() => {
   return seed(data);
@@ -280,6 +280,33 @@ describe("POST /api/articles/:article_id/comments", () =>  {
       .expect(400)
       .then(({body: {message}}) => {
         expect(message).toBe("Invalid Id")
+      })
+    })
+  })
+
+  describe("GET /api/users", () => {
+    test(`200: Responds with a list of all users`, () => {
+      return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({body: {users}}) => {
+        expect(users).toHaveLength(4)
+        users.forEach((user) => {
+          expect(user).toMatchObject({
+            username: expect.any(String),
+            name: expect.any(String),
+            avatar_url: expect.any(String)
+          })
+        })
+      })
+    })
+
+    test(`404: responds with an error if path is not found`, () => {
+      return request(app)
+      .get("/api/whatsAUser")
+      .expect(404)
+      .then(({body: {message}}) => {
+        expect(message).toBe("Route not found")
       })
     })
   })

@@ -106,8 +106,17 @@
     "description": "deletes comment by comment_id",
     "queries": ["delete", "comment", "id"],
     "exampleResponse": "NO RESPONSE AS 204 SENDS BACK NO BODY"
+  },
+
+  "GET /api/users": {
+    "description": "gets all users",
+    "queries": ["select", "users"],
+    "exampleResponse": [  {
+      "username": "lurker",
+      "name": "do_nothing",
+      "avatar_url":
+        "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
+    }]
   }
-
-
 
 }

@@ -5,6 +5,8 @@ const {getApi, psqlErrorHandler, serverErrorHandler, customErrorHandler} = requi
 const {getTopics,} = require("./controllers/topics.controller")
 const { getArticleId, getArticles, patchArticle} = require("./controllers/articles.controller")
 const {getArticleComments, postComment, deleteComment} = require("./controllers/comments.controller")
+const {getUsers} = require("./controllers/users.controller")
+
 
 app.get("/api", getApi)
 
@@ -21,6 +23,8 @@ app.post("/api/articles/:article_id/comments", postComment)
 app.patch("/api/articles/:article_id", patchArticle)
 
 app.delete("/api/comments/:comment_id", deleteComment)
+
+app.get("/api/users", getUsers)
 
 app.all("/*", (req, res) => {
     res.status(404).send({message: `Route not found`})
