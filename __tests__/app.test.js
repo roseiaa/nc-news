@@ -122,7 +122,45 @@ describe("GET: /api/articles", () => {
       })
     })
   })
-})
+
+  test("200: Response should sort by newest first when passed an alternative order query", () => {
+    return request(app)
+    .get("/api/articles?order=ASC")
+    .expect(200)
+    .then(({body: {articles}}) => {
+        expect(articles[0]).toMatchObject({
+            article_id: 7,
+            title: 'Z',
+            topic: 'mitch',
+            author: 'icellusedkars',
+            created_at: "2020-01-07T14:08:00.000Z",
+            votes: 0,
+            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+            comment_count: 0
+          
+        })
+      })
+    })
+
+    test("200: Response should sort alphabetically by the titles column when passed sort_by=title and order=ASC", () => {
+      return request(app)
+      .get("/api/articles?order=ASC&sort_by=title")
+      .expect(200)
+      .then(({body: {articles}}) => {
+          expect(articles[0]).toMatchObject(        {
+            article_id: 6,
+            title: 'A',
+            topic: 'mitch',
+            author: 'icellusedkars',
+            created_at: "2020-10-18T01:00:00.000Z",
+            votes: 0,
+            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+            comment_count: 1
+          })
+        })
+      })
+  })
+
 
 describe("GET /api/articles/:article_id/comments", () =>  {
   test("200: Responds with an array of comment objects associated with the article_id", () => {
