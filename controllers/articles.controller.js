@@ -14,7 +14,6 @@ function getArticleId(req, res, next) {
 
 function getArticles(req, res, next) {
     const {sort_by = "created_at", order = "DESC"} = req.query
-    console.log(sort_by)
     getArticleData(sort_by, order).then((articles) => {
         res.status(200).send({articles})
     })
