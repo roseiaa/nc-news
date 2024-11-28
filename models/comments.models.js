@@ -35,5 +35,16 @@ function insertCommentData(id, bodyData) {
     })
 }
 
+function removeCommentData(id) {
+    return db.query("SELECT * FROM comments").then((comments) => {
+        if(id > comments.rows.length) {
+            return Promise.reject({status: 404, message: "Comment does not exist."})
+        }
 
-module.exports = {getArticleCommentData, insertCommentData}
+        return db.query(`DELETE FROM comments WHERE comment_id = $1`, [id])
+    })
+
+}
+
+
+module.exports = {getArticleCommentData, insertCommentData, removeCommentData}

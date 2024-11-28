@@ -20,4 +20,22 @@ function getArticleData() {
     })
 }
 
-module.exports = {getArticleData, getArticleIdData}
+function updateArticle(voteModifier, id) {
+    if(!voteModifier || typeof voteModifier !== "number") {
+        return Promise.reject({status: 400, message: "Invalid Request"})
+    }
+    const values = [voteModifier, id]
+    return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2`, values)
+    .then(() => {
+        return db.query(`SELECT * FROM articles WHERE article_id = ${id}`)
+        .then((data) => {
+            if(data.rows.length === 0) {
+                return Promise.reject({status: 404, message: "Invalid input"})
+            }
+            return data.rows
+        })
+    })
+
+}
+
+module.exports = {getArticleData, getArticleIdData, updateArticle}
