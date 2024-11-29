@@ -1,27 +1,28 @@
 const db = require("../db/connection")
-const { sort } = require("../db/data/test-data/articles")
 
-function getArticleIdData(id) {
-    return db.query(`SELECT * FROM articles WHERE article_id = $1`, [id])
+function fetchArticleIdData(id) {
+    return db.query(`SELECT articles.*, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id WHERE articles.article_id = $1 GROUP BY articles.article_id `, [id])
     .then(({rows}) => {
         if(rows.length === 0) {
             return Promise.reject({status: 404, message: "Invalid input"})
+        }else {
+
+            return rows
         }
-        return rows
     })
 }
 
 // 
-function getArticleData(sort_by, order, topic) {
+function fetchArticleData(sort_by, order, topic) {
     const  queryValues = []
-    const valid_sorts = ["article_id", "title", "topic", "author", "created_at", "votes", "article_img_url", "comment_count"]
-    const valid_orders = ["ASC", "DESC"]
+    const validSorts = ["article_id", "title", "topic", "author", "created_at", "votes", "article_img_url", "comment_count"]
+    const validOrders = ["ASC", "DESC"]
     
-    if(!valid_sorts.includes(sort_by)) {
+    if(!validSorts.includes(sort_by)) {
         return Promise.reject({status: 400, message: "Invalid sort_by"})
     }
     
-    if(!valid_orders.includes(order)) {
+    if(!validOrders.includes(order)) {
         return Promise.reject({status: 400, message: `unable to order by ${order}`})
     }
     
@@ -66,4 +67,4 @@ function updateArticle(voteModifier, id) {
 
 }
 
-module.exports = {getArticleData, getArticleIdData, updateArticle}
+module.exports = {fetchArticleData, fetchArticleIdData, updateArticle}

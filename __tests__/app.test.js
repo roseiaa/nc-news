@@ -88,6 +88,18 @@ describe("GET /api/articles/:article_id", () => {
     })
   })
 
+  test("200: Response should contain a comment_count property equal to the total amount of comments", () => {
+    return request(app)
+    .get("/api/articles/1")
+    .expect(200)
+    .then(({body: {article}}) => {
+      expect(article[0]).toHaveProperty("comment_count")
+      expect(article[0]).toMatchObject({
+        comment_count: "11"
+      })
+    })
+  })
+
 })
 
 

@@ -1,9 +1,9 @@
 const endpoints = require("../endpoints.json")
-const {getArticleData, getArticleIdData, updateArticle} = require("../models/articles.models")
+const {fetchArticleData, fetchArticleIdData, updateArticle} = require("../models/articles.models")
 
 function getArticleId(req, res, next) {
     const {article_id} = req.params
-    getArticleIdData(article_id).then((article) => {
+    fetchArticleIdData(article_id).then((article) => {
         res.status(200).send({article})
     })
     .catch((err) => {
@@ -14,7 +14,7 @@ function getArticleId(req, res, next) {
 
 function getArticles(req, res, next) {
     const {sort_by = "created_at", order = "DESC", topic = null} = req.query
-    getArticleData(sort_by, order, topic).then((articles) => {
+    fetchArticleData(sort_by, order, topic).then((articles) => {
         res.status(200).send({articles})
     })
     .catch((err) => {
