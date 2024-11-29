@@ -3,6 +3,7 @@ const app = require("../app");
 const endpointsJson = require("../endpoints.json");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
+const jest_sorted = require("jest-sorted")
 const data = require("../db/data/test-data");
 /* Set up your test imports here */
 
@@ -128,16 +129,9 @@ describe("GET: /api/articles", () => {
     .get("/api/articles?order=ASC")
     .expect(200)
     .then(({body: {articles}}) => {
-        expect(articles[0]).toMatchObject({
-            article_id: 7,
-            title: 'Z',
-            topic: 'mitch',
-            author: 'icellusedkars',
-            created_at: "2020-01-07T14:08:00.000Z",
-            votes: 0,
-            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
-            comment_count: 0
-          
+        expect(articles).toHaveLength(13)
+        expect(articles).toBeSortedBy("created_at", {
+          ascending: true
         })
       })
     })
@@ -147,18 +141,61 @@ describe("GET: /api/articles", () => {
       .get("/api/articles?order=ASC&sort_by=title")
       .expect(200)
       .then(({body: {articles}}) => {
-          expect(articles[0]).toMatchObject(        {
-            article_id: 6,
-            title: 'A',
-            topic: 'mitch',
-            author: 'icellusedkars',
-            created_at: "2020-10-18T01:00:00.000Z",
-            votes: 0,
-            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
-            comment_count: 1
-          })
+        expect(articles).toHaveLength(13)
+        expect(articles).toBeSortedBy("title", {
+          ascending: true
+        })
         })
       })
+
+      test("200: Response should sort alphabetically by the titles column when passed sort_by=title and order=ASC", () => {
+        return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then(({body: {articles}}) => {
+            expect(articles).toHaveLength(12)
+            articles.forEach((article) => {
+              expect(article).toMatchObject(        {
+                article_id: expect.any(Number),
+                title: expect.any(String),
+                topic: 'mitch',
+                author: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                article_img_url: expect.any(String),
+                comment_count: expect.any(Number)
+              })
+            })
+          })
+        })
+
+        test("400: responds with an error message saying that there are no artciles with matching topic", () => {
+          return request(app)
+          .get("/api/articles?topic=paper")
+          .expect(400)
+          .then(({body: {message}}) => {
+            expect(message).toBe("No articles matching topic")
+            })
+          })
+
+          test("400: responds with an error message saying that the sort_by query inputted is invalid", () => {
+            return request(app)
+            .get("/api/articles?sort_by=anything")
+            .expect(400)
+            .then(({body: {message}}) => {
+              expect(message).toBe("Invalid sort_by")
+              })
+            })
+
+            test("400: responds with an error message saying that the order query inputted is invalid", () => {
+              return request(app)
+              .get("/api/articles?order=backwards")
+              .expect(400)
+              .then(({body: {message}}) => {
+                expect(message).toBe("unable to order by backwards")
+                })
+              })
+          
   })
 
 
