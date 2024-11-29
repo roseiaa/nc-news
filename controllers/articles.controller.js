@@ -13,8 +13,8 @@ function getArticleId(req, res, next) {
 }
 
 function getArticles(req, res, next) {
-    const {sort_by = "created_at", order = "DESC"} = req.query
-    getArticleData(sort_by, order).then((articles) => {
+    const {sort_by = "created_at", order = "DESC", topic = null} = req.query
+    getArticleData(sort_by, order, topic).then((articles) => {
         res.status(200).send({articles})
     })
     .catch((err) => {
