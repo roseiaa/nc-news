@@ -6,7 +6,9 @@ const {getTopics,} = require("./controllers/topics.controller")
 const { getArticleId, getArticles, patchArticle} = require("./controllers/articles.controller")
 const {getArticleComments, postComment, deleteComment} = require("./controllers/comments.controller")
 const {getUsers} = require("./controllers/users.controller")
+const cors = require('cors')
 
+app.use(cors());
 
 app.get("/api", getApi)
 
