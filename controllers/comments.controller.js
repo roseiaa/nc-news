@@ -1,5 +1,5 @@
 const endpoints = require("../endpoints.json")
-const {getArticleCommentData, insertCommentData, removeCommentData} = require("../models/comments.models")
+const {getArticleCommentData, insertCommentData, removeCommentData, updateComment} = require("../models/comments.models")
 
 function getArticleComments(req, res, next) {
     const {article_id} = req.params
@@ -31,4 +31,15 @@ removeCommentData(comment_id).then(() => {
     
 }
 
-module.exports = {postComment, getArticleComments, deleteComment}
+
+function patchComment(req, res, next) {
+    const newVote = req.body.inc_votes
+    const {comment_id} = req.params
+    updateComment(newVote, comment_id).then((comment) => {
+        res.status(200).send({comment})
+    })
+    .catch((err) => {
+        next(err)
+    })
+}
+module.exports = {postComment, getArticleComments, deleteComment, patchComment}

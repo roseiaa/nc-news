@@ -397,3 +397,66 @@ describe("POST /api/articles/:article_id/comments", () =>  {
       })
     })
   })
+
+
+  describe("PATCH /api/comments/:comment_id", () => {
+    test("200: Should respond with an updated comment object", () => {
+      const data = {
+        inc_votes: 1
+      }
+      return request(app)
+      .patch("/api/comments/1/")
+      .send(data)
+      .expect(200)
+      .then(({body: {comment}}) => {
+        expect(comment).toHaveLength(1)
+        expect(comment).toMatchObject([{
+          comment_id: 1,
+          votes: 17,
+          author: "butter_bridge",
+          body: expect.any(String),
+          created_at: expect.any(String)
+        }])
+      })
+    })
+
+    test("400: Responds with a 400 error if incorrect body is passed", () => {
+      const data = {
+        inc_votes: "string"
+      }
+      return request(app)
+      .patch("/api/comments/1/")
+      .send(data)
+      .expect(400)
+      .then(({body: {message}}) => {
+        expect(message).toBe("Invalid Request")
+      })
+    })
+
+    test("400: Responds with a 400 error if passed an invalid id", () => {
+      const data = {
+        inc_votes: 2
+      }
+      return request(app)
+      .patch("/api/comments/notAnId/")
+      .send(data)
+      .expect(400)
+      .then(({body: {message}}) => {
+        expect(message).toBe("Invalid Id")
+      })
+    })
+
+    test("404: responds with a 404 error if passed a valid Id that does not exist in the database", () => {
+      const data = {
+        inc_votes: 2
+      }
+      return request(app)
+      .patch("/api/comments/1000/")
+      .send(data)
+      .expect(404)
+      .then(({body: {message}}) => {
+        expect(message).toBe("Invalid input")
+      })
+    })
+  
+  })

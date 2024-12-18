@@ -46,5 +46,21 @@ function removeCommentData(id) {
 
 }
 
+function updateComment(voteModifier, id) {
+    if(!voteModifier || typeof voteModifier !== "number") {
+        return Promise.reject({status: 400, message: "Invalid Request"})
+    }
+    const values = [voteModifier, id]
+    return db.query(`UPDATE comments SET votes = votes + $1 WHERE comment_id = $2`, values)
+    .then(() => {
+        return db.query(`SELECT * FROM comments WHERE comment_id = ${id}`)
+        .then((data) => {
+            if(data.rows.length === 0) {
+                return Promise.reject({status: 404, message: "Invalid input"})
+            }
+            return data.rows
+        })
+    })
+}
 
-module.exports = {getArticleCommentData, insertCommentData, removeCommentData}
+module.exports = {getArticleCommentData, insertCommentData, removeCommentData, updateComment}
