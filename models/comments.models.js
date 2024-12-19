@@ -37,8 +37,13 @@ function insertCommentData(id, bodyData) {
 
 function removeCommentData(id) {
     return db.query("SELECT * FROM comments").then((comments) => {
-        if(id > comments.rows.length) {
+        if(Number.isNaN(Number(id))) {
+            return Promise.reject({status: 400, message: "Invalid Id"})
+        }
+        let result = comments.rows.filter(obj => obj.comment_id === Number(id))
+        if (result.length === 0) {
             return Promise.reject({status: 404, message: "Comment does not exist."})
+
         }
 
         return db.query(`DELETE FROM comments WHERE comment_id = $1`, [id])
