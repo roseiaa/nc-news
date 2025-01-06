@@ -33,18 +33,11 @@ npm install
 
 .env file for development
 
-NODE_ENV=development
-PORT=3000
-DATABASE_URL=postgresql://username:password@localhost:5432/database_name
-JWT_SECRET=your_jwt_secret
+NODE_ENV=(DEVDATA)
 
 .env.test file for testing
 
-NODE_ENV=test
-PORT=4000
-DATABASE_URL=postgresql://username:password@localhost:5432/test_database_name
-JWT_SECRET=your_test_jwt_secret
-
+NODE_ENV=(TESTDATA)
 4. Setup Databases
 
 npm run setup-dbs
