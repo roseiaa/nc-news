@@ -37,6 +37,7 @@ NODE_ENV=(DEVDATA)
 .env.test file for testing
 
 NODE_ENV=(TESTDATA)
+
 4. Setup Databases
 
 npm run setup-dbs
@@ -49,7 +50,6 @@ npm run seed
 
 npm start
 
-The server should now be running at http://localhost:3000.
 
 Running Tests
 
