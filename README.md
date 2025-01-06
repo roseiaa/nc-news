@@ -2,9 +2,8 @@
 
 NC News Backend
 
-Hosted Version
+[Hosted Version](https://nc-news-jstr.onrender.com/)
 
-Live Demo
 
 Project Overview
 
@@ -22,8 +21,8 @@ Installation and Setup
 
 1. Clone the Repository
 
-git clone https://github.com/northcoders/be-nc-news.git
-cd be-nc-news
+git clone https://github.com/roseiaa/nc-news
+cd nc-news
 
 2. Install Dependencies
 
