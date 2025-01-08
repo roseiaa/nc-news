@@ -1,6 +1,6 @@
 # Northcoders News API
 
-NC News Backend
+# NC News Backend
 
 [Hosted Version](https://nc-news-jstr.onrender.com/)
 
