@@ -18,17 +18,17 @@ PostgreSQL: v13.0 or higher
 
 ##  Installation and Setup
 
-1. Clone the Repository
+### 1. Clone the Repository
 
 git clone https://github.com/roseiaa/nc-news
 
 cd nc-news
 
-2. Install Dependencies
+### 2. Install Dependencies
 
 npm install
 
-3. Create Environment Files
+### 3. Create Environment Files
 
 .env file for development
 
@@ -38,20 +38,20 @@ NODE_ENV=(DEVDATA)
 
 NODE_ENV=(TESTDATA)
 
-4. Setup Databases
+### 4. Setup Databases
 
 npm run setup-dbs
 
-5. Seed Local Database
+### 5. Seed Local Database
 
 npm run seed
 
-6. Run the Application
+### 6. Run the Application
 
 npm start
 
 
-Running Tests
+### Running Tests
 
 npm test
 
