@@ -21,6 +21,7 @@ PostgreSQL: v13.0 or higher
 1. Clone the Repository
 
 git clone https://github.com/roseiaa/nc-news
+
 cd nc-news
 
 2. Install Dependencies
