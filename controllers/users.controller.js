@@ -6,18 +6,17 @@ function getUsers(req, res, next) {
         res.status(200).send({users})
     })
     .catch((err) => {
-        console.log(err)
+        next(err)
     })
 }
 
 function getUsername(req, res, next) {
     const {username} = req.params
     fetchUsername(username).then((username) => {
-        console.log(username)
         res.status(200).send({username})
     })
     .catch((err) => {
-        console.log(err)
+        next(err)
     })
 }
 
