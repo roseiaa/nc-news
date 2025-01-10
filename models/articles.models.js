@@ -17,7 +17,7 @@ function fetchArticleIdData(id) {
 }
 
 //
-function fetchArticleData(sort_by, order, topic) {
+function fetchArticleData(sort_by, order, topic, limit, p) {
   const queryValues = [];
   const validSorts = [
     "article_id",
@@ -50,8 +50,21 @@ function fetchArticleData(sort_by, order, topic) {
   }
 
   sqlQuery += `GROUP BY articles.article_id `;
-  sqlQuery += `ORDER BY ${sort_by} ${order}`;
+  sqlQuery += `ORDER BY ${sort_by} ${order} `;
+  
+  const pageLimit = limit
+  const page = p
+  const offset = (page-1) * pageLimit
+  if (limit && topic) {
+    sqlQuery+= `LIMIT $2 OFFSET $3`
+    queryValues.push(pageLimit, offset)
+  }
+  else if (limit && !topic) {
+    sqlQuery+= `LIMIT $1 OFFSET $2`
+    queryValues.push(pageLimit, offset)
+  }
 
+  console.log(queryValues)
   return db.query(sqlQuery, queryValues).then(({ rows }) => {
     if (rows.length === 0) {
       return Promise.reject({
@@ -95,7 +108,6 @@ function insertArticle(bodyData) {
     
     for (let data of Object.keys(bodyData)) {
         if (typeof bodyData[data] !== "string") {
-            console.log(typeof bodyData[data]);
             return Promise.reject({ status: 400, message: "invalid data types inputted in body" });
         }
     }

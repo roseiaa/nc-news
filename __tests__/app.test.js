@@ -109,6 +109,27 @@ describe("GET: /api/articles", () => {
     .get("/api/articles")
     .expect(200)
     .then(({body: {articles}}) => {
+      expect(articles).toHaveLength(10)
+      articles.forEach((article) => {
+        expect(article).toMatchObject({
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: expect.any(Number),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          comment_count: expect.any(Number),
+          article_img_url: expect.any(String)
+        })
+      })
+    })
+  })
+
+  test("200: Responds with an array of article objects", () => {
+    return request(app)
+    .get("/api/articles?limit=13")
+    .expect(200)
+    .then(({body: {articles}}) => {
       expect(articles).toHaveLength(13)
       articles.forEach((article) => {
         expect(article).toMatchObject({
@@ -116,6 +137,27 @@ describe("GET: /api/articles", () => {
           title: expect.any(String),
           article_id: expect.any(Number),
           topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          comment_count: expect.any(Number),
+          article_img_url: expect.any(String)
+        })
+      })
+    })
+  })
+
+  test("200: Responds with an array of article objects", () => {
+    return request(app)
+    .get("/api/articles?limit=7&topic=mitch")
+    .expect(200)
+    .then(({body: {articles}}) => {
+      expect(articles).toHaveLength(7)
+      articles.forEach((article) => {
+        expect(article).toMatchObject({
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: expect.any(Number),
+          topic: "mitch",
           created_at: expect.any(String),
           votes: expect.any(Number),
           comment_count: expect.any(Number),
@@ -141,7 +183,7 @@ describe("GET: /api/articles", () => {
     .get("/api/articles?order=ASC")
     .expect(200)
     .then(({body: {articles}}) => {
-        expect(articles).toHaveLength(13)
+        expect(articles).toHaveLength(10)
         expect(articles).toBeSortedBy("created_at", {
           ascending: true
         })
@@ -153,7 +195,7 @@ describe("GET: /api/articles", () => {
       .get("/api/articles?order=ASC&sort_by=title")
       .expect(200)
       .then(({body: {articles}}) => {
-        expect(articles).toHaveLength(13)
+        expect(articles).toHaveLength(10)
         expect(articles).toBeSortedBy("title", {
           ascending: true
         })
@@ -165,7 +207,7 @@ describe("GET: /api/articles", () => {
         .get("/api/articles?topic=mitch")
         .expect(200)
         .then(({body: {articles}}) => {
-            expect(articles).toHaveLength(12)
+            expect(articles).toHaveLength(10)
             articles.forEach((article) => {
               expect(article).toMatchObject(        {
                 article_id: expect.any(Number),
@@ -525,7 +567,7 @@ describe("POST /api/articles/:article_id/comments", () =>  {
               body: true,
               title: 4,
               topic: 9
-              
+
             }
             return request(app)
             .post("/api/articles")
