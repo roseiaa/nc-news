@@ -461,3 +461,79 @@ describe("POST /api/articles/:article_id/comments", () =>  {
   
   })
 
+  describe("GET /api/users/:username", () => {
+    test(`200: Responds correct user information`, () => {
+      return request(app)
+      .get("/api/users/butter_bridge")
+      .expect(200)
+      .then(({body: {username}}) => {
+          expect(username).toMatchObject({
+            username: "butter_bridge",
+            name: expect.any(String),
+            avatar_url: expect.any(String)
+          })
+        })
+      })
+    })
+
+  
+  
+
+    describe("POST /api/articles", () =>  {
+      test("201: Responds with a newly article object", () => {
+        const data = {
+          username: "butter_bridge",
+          body: "This is an article.",
+          title: "Article Title",
+          topic: "mitch",
+          article_img_url: "Image of a tiger"
+        }
+        
+        return request(app)
+        .post("/api/articles")
+        .send(data)
+        .expect(201)
+        .then(({body: {article}}) => {
+            expect(article).toMatchObject({
+              article_id: expect.any(Number),
+              author: "butter_bridge",
+              votes: 0,
+              title: "Article Title",
+              body: "This is an article.",
+              article_img_url: "Image of a tiger",
+              topic: "mitch",
+              created_at: expect.any(String),
+              comment_count: 0
+            })
+          })
+        })
+    
+        test("400: Responds with a 400 error if incorrect body is passed", () => {
+          const data = {}
+          return request(app)
+          .post("/api/articles")
+          .send(data)
+          .expect(400)
+          .then(({body: {message}}) => {
+            expect(message).toBe("Invalid Request")
+          })
+          })
+    
+          test("400: Responds with a 400 error if body is passed with incorrect data types", () => {
+            const data = {
+              username: 1,
+              body: true,
+              title: 4,
+              topic: 9
+              
+            }
+            return request(app)
+            .post("/api/articles")
+            .send(data)
+            .expect(400)
+            .then(({body: {message}}) => {
+              expect(message).toBe("invalid data types inputted in body")
+            })
+            })
+      })
+    
