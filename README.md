@@ -1,34 +1,34 @@
 # Northcoders News API
 
-NC News Backend
+## NC News Backend
 
 [Hosted Version](https://nc-news-jstr.onrender.com/)
 
 
-Project Overview
+## Project Overview
 
 We will be building an API for the purpose of accessing application data programmatically. The intention here is to mimic the building of a real-world backend service (such as Reddit) which should provide this information to the front-end architecture.
 
-Your database will be PostgreSQL, and you will interact with it using node-postgres.
 
-Prerequisites
+##  Prerequisites
 
 Node.js: v16.0.0 or higher
 
 PostgreSQL: v13.0 or higher
 
-Installation and Setup
+##  Installation and Setup
 
-1. Clone the Repository
+### 1. Clone the Repository
 
 git clone https://github.com/roseiaa/nc-news
+
 cd nc-news
 
-2. Install Dependencies
+### 2. Install Dependencies
 
 npm install
 
-3. Create Environment Files
+### 3. Create Environment Files
 
 .env file for development
 
@@ -38,24 +38,24 @@ NODE_ENV=(DEVDATA)
 
 NODE_ENV=(TESTDATA)
 
-4. Setup Databases
+### 4. Setup Databases
 
 npm run setup-dbs
 
-5. Seed Local Database
+### 5. Seed Local Database
 
 npm run seed
 
-6. Run the Application
+### 6. Run the Application
 
 npm start
 
 
-Running Tests
+### Running Tests
 
 npm test
 
-Additional Notes
+## Additional Notes
 
 Ensure PostgreSQL is running locally before starting the application.
 
