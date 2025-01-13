@@ -17,7 +17,7 @@ function fetchArticleIdData(id) {
 }
 
 //
-function fetchArticleData(sort_by, order, topic, limit, p) {
+function fetchArticleData(sort_by, order, limit, p, topic) {
   const queryValues = [];
   const validSorts = [
     "article_id",

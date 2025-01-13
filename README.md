@@ -50,7 +50,6 @@ npm run seed
 
 npm start
 
-
 ### Running Tests
 
 npm test
