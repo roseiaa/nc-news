@@ -259,7 +259,7 @@ describe("GET /api/articles/:article_id/comments", () =>  {
     .get("/api/articles/1/comments")
     .expect(200)
     .then(({body: {comments}}) => {
-      expect(comments).toHaveLength(11)
+      expect(comments).toHaveLength(6)
       comments.forEach((comment) => {
         expect(comment).toMatchObject({
           comment_id: expect.any(Number),

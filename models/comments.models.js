@@ -1,8 +1,9 @@
 const db = require("../db/connection")
 const format = require('pg-format');
 
-function getArticleCommentData(id) {
-    return db.query(`SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC`, [id])
+function getArticleCommentData(id, page=1) {
+    const offset = (page-1) * 6
+    return db.query(`SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC LIMIT 6 OFFSET $2`, [id, offset])
     .then(({rows}) => {
         return rows
     })
