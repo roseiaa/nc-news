@@ -2,7 +2,8 @@ const endpoints = require("../endpoints.json")
 const {getArticleCommentData, insertCommentData, removeCommentData, updateComment} = require("../models/comments.models")
 
 function getArticleComments(req, res, next) {
-    const {article_id, page} = req.params
+    const {article_id} = req.params
+    const {page} = req.query
     getArticleCommentData(article_id, page).then((comments) => {
         res.status(200).send({comments})
     })
